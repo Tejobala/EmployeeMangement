@@ -54,15 +54,21 @@ namespace Tasks.Controllers
             return Ok();
         }
 
+        public IEmployeeRepository Get_employeeRepository()
+        {
+            return _employeeRepository;
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee([FromRoute] int id)
         {
-            int employee = await _employeeRepository.DeleteEmployeeAsync(id);
-            if(employee == null)
+         var employee= await _employeeRepository.GetByIdAsync(id);
+            if (employee == null)
             {
                 return NotFound();
             }
-            return Ok();
+            _ = _employeeRepository.DeleteEmployeeAsync(id);
+            return NoContent();
         }
     }
 }
